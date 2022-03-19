@@ -250,6 +250,37 @@ impl pallet_balances::Config for Runtime {
 }
 
 parameter_types! {
+    // The u128 constant value 500 is aliased to a type named ExistentialDeposit.
+    pub const ExistentialDeposit: u128 = 500;
+    // A heuristic that is used for weight estimation.
+    pub const MaxLocks: u32 = 50;
+}
+
+impl pallet_balances::Config for Runtime {
+    // The previously defined parameter_type is used as a configuration parameter.
+    type MaxLocks = MaxLocks;
+
+    // The "Balance" that appears after the equal sign is an alias for the u128 type.
+    type Balance = Balance;
+
+    // The empty value, (), is used to specify a no-op callback function.
+    type DustRemoval = ();
+
+    // The previously defined parameter_type is used as a configuration parameter.
+    type ExistentialDeposit = ExistentialDeposit;
+
+    // The FRAME runtime system is used to track the accounts that hold balances.
+    type AccountStore = System;
+
+    // Weight information is supplied to the Balances pallet by the node template runtime.
+    // type WeightInfo = (); // old way
+    type WeightInfo = pallet_balances::weights::SubstrateWeight<Runtime>;
+
+    // The ubiquitous event type.
+    type Event = Event;
+}
+
+parameter_types! {
 	pub const TransactionByteFee: Balance = 1;
 }
 
